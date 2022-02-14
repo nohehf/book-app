@@ -13,14 +13,19 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Role } from 'src/users/role.enum';
 import { createReadStream, existsSync } from 'fs';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { multerOptions } from './upload.config';
+import { HasRole } from 'src/users/role.decorator';
+import { RolesGuard } from 'src/users/role.guard';
 
 @Controller('books')
 export class BooksController {
   @Post()
   @UseInterceptors(FileInterceptor('file', multerOptions))
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @HasRole(Role.Student)
   uploadFile(@UploadedFile() file: Express.Multer.File, @Req() req) {
     if (req.fileValidationError) {
       throw new BadRequestException(req.fileValidationError);
@@ -29,10 +34,12 @@ export class BooksController {
       originalName: file.originalname,
       newName: file.filename,
       path: '/books/' + file.filename,
+      user: req.user,
     };
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @HasRole(Role.Teacher)
   @Get(':id')
   getFile(
     @Param('id') id: string,
