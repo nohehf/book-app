@@ -24,5 +24,9 @@ Everybody logged in can (for now) upload a file.
 Also, we could probably think of uploading pdfs containing malwares.
 
 ## Exercice 3 
+1. There are many ways to securize an endpoint in NestJS, can you mention two of them and common scenarios where they fit well ?  
+Roles -> Allows different users to interact with different sections.
+Middlwares -> Allow to intercept the request before the handler, for example to prevent the user for submiting malicious or incorrect
+data (cross site scripting for example)
 
-
+## Bonus

@@ -25,7 +25,7 @@ export class BooksController {
   @Post()
   @UseInterceptors(FileInterceptor('file', multerOptions))
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @HasRole(Role.Student)
+  @HasRole(Role.Student, Role.Teacher)
   uploadFile(@UploadedFile() file: Express.Multer.File, @Req() req) {
     if (req.fileValidationError) {
       throw new BadRequestException(req.fileValidationError);
