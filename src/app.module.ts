@@ -2,10 +2,11 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { UserModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { AuthModuleOptions } from '@nestjs/passport';
 
 @Module({
   imports: [UserModule, AuthModule],
   controllers: [AppController],
-  providers: [],
+  providers: [AuthModuleOptions],
 })
 export class AppModule {}

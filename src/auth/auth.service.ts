@@ -1,16 +1,25 @@
 import { Injectable } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
+import { UserService } from '../users/users.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UsersService) {}
+  constructor(private userService: UserService) {}
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOne(username);
-    if (user && user.password === pass) {
+  async validateUser(email: string, password: string): Promise<any> {
+    const user = await this.userService.getOne(email);
+    if (user && user.password === password) {
       const { password, ...result } = user;
       return result;
     }
-    return null;
+    return null; // user is not valid
+  }
+
+  async createUser(email: string, password: string): Promise<any> {
+    const existing_user = await this.userService.getOne(email);
+    if (!existing_user) {
+      const new_user = await this.userService.createOne(email, password);
+      return new_user;
+    }
+    return null; // user already exists
   }
 }
