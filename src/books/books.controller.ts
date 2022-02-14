@@ -10,10 +10,11 @@ import {
   UseInterceptors,
   Req,
   BadRequestException,
+  UseGuards,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { createReadStream, existsSync } from 'fs';
-import { diskStorage } from 'multer';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { multerOptions } from './upload.config';
 
 @Controller('books')
@@ -31,6 +32,7 @@ export class BooksController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   getFile(
     @Param('id') id: string,
