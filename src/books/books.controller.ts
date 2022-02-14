@@ -8,22 +8,22 @@ import {
   StreamableFile,
   UploadedFile,
   UseInterceptors,
+  Req,
+  BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { createReadStream, existsSync } from 'fs';
 import { diskStorage } from 'multer';
+import { multerOptions } from './upload.config';
 
 @Controller('books')
 export class BooksController {
   @Post()
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './uploads',
-      }),
-    }),
-  )
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
+  @UseInterceptors(FileInterceptor('file', multerOptions))
+  uploadFile(@UploadedFile() file: Express.Multer.File, @Req() req) {
+    if (req.fileValidationError) {
+      throw new BadRequestException(req.fileValidationError);
+    }
     return {
       originalName: file.originalname,
       newName: file.filename,
@@ -47,8 +47,4 @@ export class BooksController {
     }
     throw new NotFoundException();
   }
-}
-
-async function saveFile(file: Express.Multer.File): Promise<any> {
-  return;
 }
