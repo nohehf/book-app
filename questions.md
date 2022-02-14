@@ -50,7 +50,7 @@ data (cross site scripting for example)
 ## Bonus 
 1. If you were to deploy for real such an application, what would you need to change in it ?  
 
-Actually a lot, first they are still many potential security issues such as the fact that anny loggued user can retrieve an other user infos via `GET /users/:id`. And the other security issues mentioned above.
+Actually a lot, first they are still many potential security issues such as the fact that anny loggued user can retrieve an other user infos via `GET /user/:id`. And the other security issues mentioned above.
 
 Then I will change the database, sqlite not being known to be the best one for production needs.
 
