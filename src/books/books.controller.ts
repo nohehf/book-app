@@ -13,8 +13,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { createReadStream, existsSync } from 'fs';
 import { diskStorage } from 'multer';
 
-@Controller('file')
-export class FilesController {
+@Controller('books')
+export class BooksController {
   @Post()
   @UseInterceptors(
     FileInterceptor('file', {
@@ -27,7 +27,7 @@ export class FilesController {
     return {
       originalName: file.originalname,
       newName: file.filename,
-      path: '/file/' + file.filename,
+      path: '/books/' + file.filename,
     };
   }
 
