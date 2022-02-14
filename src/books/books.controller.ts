@@ -34,7 +34,6 @@ export class BooksController {
       originalName: file.originalname,
       newName: file.filename,
       path: '/books/' + file.filename,
-      user: req.user,
     };
   }
 

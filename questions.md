@@ -1,5 +1,19 @@
 # Questions
 ## Exercice 1
+### Special instructions:
+If you want the following query to work:
+```bash
+curl -d '{"email":"jean@my-school.com", "password":"my-password"}' \
+-H "Content-Type: application/json" -X POST \ 
+"http://localhost:3000/login"
+```
+You first must create this user:
+```bash
+curl -d '{"email":"jean@my-school.com", "password":"my-password"}' \
+-H "Content-Type: application/json" -X POST \ 
+"http://localhost:3000/register"
+```
+
 1.  What crucial security feature are we missing here ?  
 
 Password encryption, here we store plain passwords in the database, which is critical in case of leaks for example.  
