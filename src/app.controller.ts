@@ -5,15 +5,20 @@ import {
   UseGuards,
   Body,
   Get,
+  Param,
+  NotFoundException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { AuthService } from './auth/auth.service';
-import { User } from './users/users.service';
+import { User, UserService } from './users/users.service';
 
 @Controller()
 export class AppController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private userService: UserService,
+  ) {}
 
   @Post('register')
   async register(@Body() body: { email: string; password: string }) {
@@ -31,8 +36,17 @@ export class AppController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
+  @Get('me')
+  async getProfile(@Request() req) {
     return req.user;
+  }
+
+  @Get('user/:id')
+  async getUser(@Param('id') id: number) {
+    const user: User = await this.userService.getOneById(id);
+    if (user) {
+      return user;
+    }
+    throw new NotFoundException();
   }
 }
