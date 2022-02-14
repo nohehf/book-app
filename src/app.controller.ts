@@ -45,7 +45,8 @@ export class AppController {
   async getUser(@Param('id') id: number) {
     const user: User = await this.userService.getOneById(id);
     if (user) {
-      return user;
+      const { password, ...result } = user; //prevents from returning user password
+      return result;
     }
     throw new NotFoundException();
   }
